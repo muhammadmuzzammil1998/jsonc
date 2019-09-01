@@ -1,1 +1,9 @@
 language: go
+go:
+ - 1.12.9
+notifications:
+  email:
+    recipients:
+    - muhammadmuzzammil.cs@gmail.com
+    on_success: change
+    on_failure: always
