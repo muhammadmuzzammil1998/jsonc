@@ -29,8 +29,8 @@ func translate(s []byte) []byte {
 		quote bool
 	)
 	comment := &commentData{}
-	for _, ch := range []byte(s) {
-		if ch == 34 { // 32 = quote (")
+	for _, ch := range s {
+		if ch == 34 { // 34 = quote (")
 			quote = !quote
 		}
 		if (ch == 32 || ch == 9) && !quote { // 32 = space ( ), 9 = tab (	)
