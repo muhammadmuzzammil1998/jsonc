@@ -43,6 +43,10 @@ func translate(s []byte) []byte {
 			}
 			continue
 		}
+		if quote && !comment.startted {
+			j = append(j, ch)
+			continue
+		}
 		token := string(ch)
 		if comment.startted {
 			if token == "*" {
