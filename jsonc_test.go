@@ -22,14 +22,14 @@ var jsonTest, jsoncTest testsStruct
 
 func init() {
 	jsonTest = testsStruct{
-		validBlock:   b(`{"foo":"bar foo","true":false,"number":42,"object":{"test":"done"},"array":[1,2,3]}`),
+		validBlock:   b(`{"foo":"bar foo","true":false,"number":42,"object":{"test":"done"},"array":[1,2,3],"url":"https://github.com"}`),
 		invalidBlock: b(`{"foo":`),
 	}
 	jsoncTest = testsStruct{
-		validBlock:    b(`{"foo": /* this is a block comment */ "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3] }`),
-		invalidBlock:  b(`{"foo": /* this is a block comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3] }`),
-		validSingle:   b("{\"foo\": // this is a single line comment\n\"bar foo\", \"true\": false, \"number\": 42, \"object\": { \"test\": \"done\" }, \"array\" : [1, 2, 3] }"),
-		invalidSingle: b(`{"foo": // this is a single line comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3] }`),
+		validBlock:    b(`{"foo": /* this is a block comment */ "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com" }`),
+		invalidBlock:  b(`{"foo": /* this is a block comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com" }`),
+		validSingle:   b("{\"foo\": // this is a single line comment\n\"bar foo\", \"true\": false, \"number\": 42, \"object\": { \"test\": \"done\" }, \"array\" : [1, 2, 3], \"url\" : \"https://github.com\" }"),
+		invalidSingle: b(`{"foo": // this is a single line comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com" }`),
 	}
 }
 
@@ -81,7 +81,8 @@ func TestUnmarshal(t *testing.T) {
 		Object struct {
 			Test string `json:"test"`
 		} `json:"object"`
-		Array []int `json:"array"`
+		Array []int  `json:"array"`
+		URL   string `json:"url"`
 	}
 
 	t.Run("Testing Unmarshal()", func(t *testing.T) {
