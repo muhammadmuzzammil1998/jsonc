@@ -22,70 +22,99 @@
 
 package jsonc
 
+const (
+	quote   = 34 // ("")
+	space   = 32 // ( )
+	tab     = 9  // (	)
+	newLine = 10 // (\n)
+	star    = 42 // (*)
+	slash   = 47 // (/)
+)
+
+type state int
+
+const (
+	stopped state = iota
+	canStart
+	started
+	canStop
+)
+
+type comment struct {
+	state       state
+	isJSON      bool
+	isMultiLine bool
+}
+
+func (cmt *comment) setState(s state) {
+	cmt.state = s
+}
+
+func (cmt *comment) checkState(s state) bool {
+	return cmt.state == s
+}
+
 func translate(s []byte) []byte {
-	var (
-		line  int
-		j     []byte
-		quote bool
-	)
-	comment := &commentData{}
-	for _, ch := range []byte(s) {
-		if ch == 34 { // 32 = quote (")
-			quote = !quote
-		}
-		if (ch == 32 || ch == 9) && !quote { // 32 = space ( ), 9 = tab (	)
-			continue
-		}
-		if ch == 10 { // 10 = new line
-			line++
-			if comment.isSingleLined {
-				comment.stop()
-			}
-			continue
-		}
-		if quote && !comment.startted {
-			j = append(j, ch)
-			continue
-		}
-		token := string(ch)
-		if comment.startted {
-			if token == "*" {
-				comment.canEnd = true
-				continue
-			}
-			if comment.canEnd && token == "/" {
-				comment.stop()
-				continue
-			}
-			continue
-		}
-		if comment.canStart && (token == "*" || token == "/") {
-			comment.start(token)
-			continue
-		}
-		if token == "/" {
-			comment.canStart = true
-			continue
-		}
-		j = append(j, ch)
+	vj := make([]byte, len(s))
+	i := 0
+	cmt := &comment{
+		state: stopped,
 	}
-	return j
-}
+	for _, s := range s {
+		if cmt.checkState(stopped) {
+			if s == quote {
+				cmt.isJSON = !cmt.isJSON
+			}
 
-type commentData struct {
-	canStart      bool
-	canEnd        bool
-	startted      bool
-	isSingleLined bool
-	endLine       int
-}
+			if cmt.isJSON {
+				vj[i] = s
+				i++
+				continue
+			} else {
+				if s == space || s == tab || s == newLine {
+					continue
+				}
+			}
+		}
 
-func (c *commentData) stop() {
-	c.startted = false
-	c.canStart = false
-}
+		if cmt.checkState(stopped) && s == slash {
+			cmt.setState(canStart)
+			continue
+		}
 
-func (c *commentData) start(token string) {
-	c.startted = true
-	c.isSingleLined = token == "/"
+		if cmt.checkState(canStart) && (s == slash || s == star) {
+			cmt.setState(started)
+			if s == star {
+				cmt.isMultiLine = true
+			}
+			continue
+		}
+
+		if cmt.checkState(started) {
+			if s == star {
+				cmt.setState(canStop)
+				continue
+			}
+
+			if s == newLine {
+				if cmt.isMultiLine {
+					continue
+				}
+				cmt.setState(stopped)
+			}
+
+			continue
+		}
+
+		if cmt.checkState(canStop) && (s == slash) {
+			cmt.setState(stopped)
+			cmt.isMultiLine = false
+			continue
+		}
+
+		vj[i] = s
+		i++
+	}
+
+	return vj[:i]
 }
