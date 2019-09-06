@@ -62,4 +62,4 @@ $ go run app.go
 
 ## Contributions
 
-Contributions are welcome but kindly follow the Code of Conduct and guidlines. Please don't make Pull Requests for typographical errors, grammatical mistakes, "sane way" of doing it, etc. Open an issue for it. Thanks!
+Contributions are welcome but kindly follow the Code of Conduct and guidelines. Please don't make Pull Requests for typographical errors, grammatical mistakes, "sane way" of doing it, etc. Open an issue for it. Thanks!
