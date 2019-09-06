@@ -179,3 +179,17 @@ func TestValid(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkTranslate(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		translate(jsoncTest.validSingle)
+		translate(jsoncTest.validBlock)
+	}
+}
+
+func BenchmarkValid(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		Valid(jsoncTest.validSingle)
+		Valid(jsoncTest.validBlock)
+	}
+}
