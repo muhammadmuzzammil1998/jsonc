@@ -24,10 +24,10 @@ package jsonc
 
 func translate(s []byte) []byte {
 	var (
-		line  int
-		j     []byte
+		i     int
 		quote bool
 	)
+	j := make([]byte, len(s))
 	comment := &commentData{}
 	for _, ch := range s {
 		if ch == 34 { // 34 = quote (")
@@ -37,14 +37,14 @@ func translate(s []byte) []byte {
 			continue
 		}
 		if ch == 10 { // 10 = new line
-			line++
 			if comment.isSingleLined {
 				comment.stop()
 			}
 			continue
 		}
 		if quote && !comment.startted {
-			j = append(j, ch)
+			j[i] = ch
+			i++
 			continue
 		}
 		token := string(ch)
@@ -67,9 +67,10 @@ func translate(s []byte) []byte {
 			comment.canStart = true
 			continue
 		}
-		j = append(j, ch)
+		j[i] = ch
+		i++
 	}
-	return j
+	return j[:i]
 }
 
 type commentData struct {
