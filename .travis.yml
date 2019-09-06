@@ -5,5 +5,5 @@ notifications:
   email:
     recipients:
     - muhammadmuzzammil.cs@gmail.com
-    on_success: change
+    on_success: always
     on_failure: always
