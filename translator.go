@@ -22,6 +22,16 @@
 
 package jsonc
 
+const (
+	ESCAPE   = 92
+	QUOTE    = 34
+	SPACE    = 32
+	TAB      = 9
+	NEWLINE  = 10
+	ASTERISK = 42
+	SLASH    = 47
+)
+
 func translate(s []byte) []byte {
 	var (
 		i       int
@@ -31,19 +41,19 @@ func translate(s []byte) []byte {
 	j := make([]byte, len(s))
 	comment := &commentData{}
 	for _, ch := range s {
-		if ch == 92 || escaped { // 92 = escape sequence (\)
+		if ch == ESCAPE || escaped {
 			j[i] = ch
 			i++
 			escaped = !escaped
 			continue
 		}
-		if ch == 34 { // 34 = quote (")
+		if ch == QUOTE {
 			quote = !quote
 		}
-		if (ch == 32 || ch == 9) && !quote { // 32 = space ( ), 9 = tab (	)
+		if (ch == SPACE || ch == TAB) && !quote {
 			continue
 		}
-		if ch == 10 { // 10 = new line
+		if ch == NEWLINE {
 			if comment.isSingleLined {
 				comment.stop()
 			}
@@ -54,23 +64,22 @@ func translate(s []byte) []byte {
 			i++
 			continue
 		}
-		token := string(ch)
 		if comment.startted {
-			if token == "*" {
+			if ch == ASTERISK {
 				comment.canEnd = true
 				continue
 			}
-			if comment.canEnd && token == "/" {
+			if comment.canEnd && ch == SLASH {
 				comment.stop()
 				continue
 			}
 			continue
 		}
-		if comment.canStart && (token == "*" || token == "/") {
-			comment.start(token)
+		if comment.canStart && (ch == ASTERISK || ch == SLASH) {
+			comment.start(ch)
 			continue
 		}
-		if token == "/" {
+		if ch == SLASH {
 			comment.canStart = true
 			continue
 		}
@@ -93,7 +102,7 @@ func (c *commentData) stop() {
 	c.canStart = false
 }
 
-func (c *commentData) start(token string) {
+func (c *commentData) start(ch byte) {
 	c.startted = true
-	c.isSingleLined = token == "/"
+	c.isSingleLined = ch == SLASH
 }
