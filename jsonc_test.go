@@ -22,14 +22,14 @@ var jsonTest, jsoncTest testsStruct
 
 func init() {
 	jsonTest = testsStruct{
-		validBlock:   b(`{"foo":"bar foo","true":false,"number":42,"object":{"test":"done"},"array":[1,2,3],"url":"https://github.com"}`),
-		invalidBlock: b(`{"foo":`),
+		validBlock:   b(`{"foo":"bar foo","true":false,"number":42,"object":{"test":"done"},"array":[1,2,3],"url":"https://github.com","escape":"\"wo//rking"}`),
+		invalidBlock: b(`{"foo":\"`),
 	}
 	jsoncTest = testsStruct{
-		validBlock:    b(`{"foo": /* this is a block comment */ "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com" }`),
-		invalidBlock:  b(`{"foo": /* this is a block comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com" }`),
-		validSingle:   b("{\"foo\": // this is a single line comment\n\"bar foo\", \"true\": false, \"number\": 42, \"object\": { \"test\": \"done\" }, \"array\" : [1, 2, 3], \"url\" : \"https://github.com\" }"),
-		invalidSingle: b(`{"foo": // this is a single line comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com" }`),
+		validBlock:    b(`{"foo": /* this is a block comment */ "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com", "escape":"\"wo//rking" }`),
+		invalidBlock:  b(`{"foo": /* this is a block comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com", "escape":"\"wo//rking }`),
+		validSingle:   b("{\"foo\": // this is a single line comment\n\"bar foo\", \"true\": false, \"number\": 42, \"object\": { \"test\": \"done\" }, \"array\" : [1, 2, 3], \"url\" : \"https://github.com\", \"escape\":\"\\\"wo//rking\" }"),
+		invalidSingle: b(`{"foo": // this is a single line comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com", "escape":"\"wo//rking" }`),
 	}
 }
 
@@ -81,8 +81,9 @@ func TestUnmarshal(t *testing.T) {
 		Object struct {
 			Test string `json:"test"`
 		} `json:"object"`
-		Array []int  `json:"array"`
-		URL   string `json:"url"`
+		Array  []int  `json:"array"`
+		URL    string `json:"url"`
+		Escape string `json:"escape"`
 	}
 
 	t.Run("Testing Unmarshal()", func(t *testing.T) {
