@@ -24,12 +24,19 @@ package jsonc
 
 func translate(s []byte) []byte {
 	var (
-		i     int
-		quote bool
+		i       int
+		quote   bool
+		escaped bool
 	)
 	j := make([]byte, len(s))
 	comment := &commentData{}
 	for _, ch := range s {
+		if ch == 92 || escaped { // 92 = escape sequence (\)
+			j[i] = ch
+			i++
+			escaped = !escaped
+			continue
+		}
 		if ch == 34 { // 34 = quote (")
 			quote = !quote
 		}
