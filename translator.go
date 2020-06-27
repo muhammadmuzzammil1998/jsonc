@@ -73,6 +73,7 @@ func translate(s []byte) []byte {
 				comment.stop()
 				continue
 			}
+			comment.canEnd = false
 			continue
 		}
 		if comment.canStart && (ch == ASTERISK || ch == SLASH) {
