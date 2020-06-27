@@ -26,7 +26,7 @@ func init() {
 		invalidBlock: b(`{"foo":\"`),
 	}
 	jsoncTest = testsStruct{
-		validBlock:    b(`{"foo": /* this is a block comment */ "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com", "escape":"\"wo//rking" }`),
+		validBlock:    b(`{"foo": /** this is a bloc/k comment */ "bar foo", "true": /* true */ false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com", "escape":"\"wo//rking" }`),
 		invalidBlock:  b(`{"foo": /* this is a block comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com", "escape":"\"wo//rking }`),
 		validSingle:   b("{\"foo\": // this is a single line comment\n\"bar foo\", \"true\": false, \"number\": 42, \"object\": { \"test\": \"done\" }, \"array\" : [1, 2, 3], \"url\" : \"https://github.com\", \"escape\":\"\\\"wo//rking\" }"),
 		invalidSingle: b(`{"foo": // this is a single line comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com", "escape":"\"wo//rking" }`),
