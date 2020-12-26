@@ -42,8 +42,10 @@ func translate(s []byte) []byte {
 	comment := &commentData{}
 	for _, ch := range s {
 		if ch == ESCAPE || escaped {
-			j[i] = ch
-			i++
+			if !comment.startted {
+				j[i] = ch
+				i++
+			}
 			escaped = !escaped
 			continue
 		}
