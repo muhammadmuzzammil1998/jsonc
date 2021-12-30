@@ -4,7 +4,7 @@
 
 <p align="center">
   <i>JSON with comments for Go!</i> <br>
-  <i><a href="https://travis-ci.com/muhammadmuzzammil1998/jsonc" target="_blank"><img src="https://travis-ci.com/muhammadmuzzammil1998/jsonc.svg?branch=master" alt="travisci"></a></i>
+  <i><a href="https://github.com/muhammadmuzzammil1998/jsonc/actions/workflows/go.yml" target="_blank"><img src="https://github.com/muhammadmuzzammil1998/jsonc/actions/workflows/go.yml/badge.svg" alt="GitHub Actions"></a></i>
 </p>
 
 JSONC is a superset of JSON which supports comments. JSON formatted files are readable to humans but the lack of comments decreases readability. With JSONC, you can use block (`/* */`) and single line (`//` of `#`) comments to describe the functionality. Microsoft VS Code also uses this format in their configuration files like `settings.json`, `keybindings.json`, `launch.json`, etc.
