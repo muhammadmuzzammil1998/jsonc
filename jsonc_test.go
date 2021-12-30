@@ -16,6 +16,8 @@ type testsStruct struct {
 	validSingle   []byte
 	invalidBlock  []byte
 	invalidSingle []byte
+	validHash     []byte
+	invalidHash   []byte
 }
 
 var jsonTest, jsoncTest testsStruct
@@ -30,6 +32,8 @@ func init() {
 		invalidBlock:  b(`{"foo": /* this is a block comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com", "escape":"\"wo//rking }`),
 		validSingle:   b("{\"foo\": // this is a single line comm\\\"ent\n\"bar foo\", \"true\": false, \"number\": 42, \"object\": { \"test\": \"done\" }, \"array\" : [1, 2, 3], \"url\" : \"https://github.com\", \"escape\":\"\\\"wo//rking\" }"),
 		invalidSingle: b(`{"foo": // this is a single line comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com", "escape":"\"wo//rking" }`),
+		validHash:     b("{\"foo\": # this is a single line comm\\\"ent\n\"bar foo\", \"true\": false, \"number\": 42, \"object\": { \"test\": \"done\" }, \"array\" : [1, 2, 3], \"url\" : \"https://github.com\", \"escape\":\"\\\"wo//rking\" }"),
+		invalidHash:   b(`{"foo": # this is a single line comment "bar foo", "true": false, "number": 42, "object": { "test": "done" }, "array" : [1, 2, 3], "url" : "https://github.com", "escape":"\"wo//rking" }`),
 	}
 }
 
@@ -56,6 +60,15 @@ func TestToJSON(t *testing.T) {
 		}, {
 			name:    "Test for invalid single line comment.",
 			arg:     jsoncTest.invalidSingle,
+			want:    jsonTest.invalidBlock,
+			wantErr: true,
+		}, {
+			name: "Test for valid single line comment started with hash.",
+			arg:  jsoncTest.validHash,
+			want: jsonTest.validBlock,
+		}, {
+			name:    "Test for invalid single line comment started with hash.",
+			arg:     jsoncTest.invalidHash,
 			want:    jsonTest.invalidBlock,
 			wantErr: true,
 		},
@@ -185,6 +198,7 @@ func BenchmarkTranslate(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		translate(jsoncTest.validSingle)
 		translate(jsoncTest.validBlock)
+		translate(jsoncTest.validHash)
 	}
 }
 
@@ -192,5 +206,6 @@ func BenchmarkValid(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		Valid(jsoncTest.validSingle)
 		Valid(jsoncTest.validBlock)
+		Valid(jsoncTest.validHash)
 	}
 }

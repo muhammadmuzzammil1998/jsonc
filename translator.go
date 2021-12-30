@@ -30,6 +30,7 @@ const (
 	NEWLINE  = 10
 	ASTERISK = 42
 	SLASH    = 47
+	HASH     = 35
 )
 
 func translate(s []byte) []byte {
@@ -86,6 +87,10 @@ func translate(s []byte) []byte {
 			comment.canStart = true
 			continue
 		}
+		if ch == HASH {
+			comment.start(ch)
+			continue
+		}
 		j[i] = ch
 		i++
 	}
@@ -107,5 +112,5 @@ func (c *commentData) stop() {
 
 func (c *commentData) start(ch byte) {
 	c.startted = true
-	c.isSingleLined = ch == SLASH
+	c.isSingleLined = ch == SLASH || ch == HASH
 }
