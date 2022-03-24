@@ -67,7 +67,7 @@ func translate(s []byte) []byte {
 			i++
 			continue
 		}
-		if comment.startted {
+		if comment.startted && !comment.isSingleLined {
 			if ch == ASTERISK {
 				comment.canEnd = true
 				continue
