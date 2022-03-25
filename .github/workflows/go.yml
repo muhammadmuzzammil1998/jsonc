@@ -17,9 +17,6 @@ jobs:
       uses: actions/setup-go@v2
       with:
         go-version: 1.17
-
-    - name: Module init
-      run: go mod init github.com/muhammadmuzzammil1998/jsonc
       
     - name: Build
       run: go build -v ./...
