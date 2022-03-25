@@ -63,3 +63,9 @@ $ go run app.go
 ## Contributions
 
 Contributions are welcome but kindly follow the Code of Conduct and guidelines. Please don't make Pull Requests for typographical errors, grammatical mistakes, "sane way" of doing it, etc. Open an issue for it. Thanks!
+
+### Contributors
+
+<a href="https://github.com/muhammadmuzzammil1998/jsonc/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=muhammadmuzzammil1998/jsonc" />
+</a>
