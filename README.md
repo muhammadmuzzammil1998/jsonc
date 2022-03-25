@@ -13,7 +13,7 @@ JSONC is a superset of JSON which supports comments. JSON formatted files are re
 
 ## What this package offers
 
-**JSONC for Go** offers ability to convert and unmarshal JSONC to pure JSON. It also provides functionality to read JSONC file from disk and return JSONC and corresponding JSON encoding to operate on. However, it only provides a one way conversion. That is, you can not generate JSONC from JSON. Read [documentation](DOCUMENTATION.md) for detailed examples.
+**JSONC for Go** offers ability to convert and unmarshal JSONC to pure JSON. It also provides functionality to read JSONC file from disk and return JSONC and corresponding JSON encoding to operate on. However, it only provides a one way conversion. That is, you can not generate JSONC from JSON. Read [documentation](.github/DOCUMENTATION.md) for detailed examples.
 
 ## Usage
 
