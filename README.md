@@ -1,6 +1,6 @@
 #
 
-![jsonc](jsonc.png)
+![jsonc](.github/images/jsonc.png)
 
 <p align="center">
   <i>JSON with comments for Go!</i> <br>
@@ -9,7 +9,7 @@
 
 JSONC is a superset of JSON which supports comments. JSON formatted files are readable to humans but the lack of comments decreases readability. With JSONC, you can use block (`/* */`) and single line (`//` of `#`) comments to describe the functionality. Microsoft VS Code also uses this format in their configuration files like `settings.json`, `keybindings.json`, `launch.json`, etc.
 
-![jsonc](carbon.png)
+![jsonc](.github/images/carbon.png)
 
 ## What this package offers
 
