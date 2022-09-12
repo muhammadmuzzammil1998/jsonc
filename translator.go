@@ -50,7 +50,7 @@ func translate(s []byte) []byte {
 			escaped = !escaped
 			continue
 		}
-		if ch == QUOTE {
+		if ch == QUOTE && !comment.startted {
 			quote = !quote
 		}
 		if (ch == SPACE || ch == TAB) && !quote {
